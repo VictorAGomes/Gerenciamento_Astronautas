@@ -4,9 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "Astronauta.hpp" // Inclui a declaração antecipada da classe Astronauta
+#include "Astronauta.hpp" 
 
-class Astronauta; // Declaração antecipada da classe Astronauta
+class Astronauta; 
 
 class Voo
 {

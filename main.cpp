@@ -206,7 +206,6 @@ int main()
         case 10:
         {
             std::cout << "Encerrando o programa..." << std::endl;
-            // Limpar memória dos astronautas e voos
             for (Astronauta *astronauta : astronautas)
             {
                 delete astronauta;

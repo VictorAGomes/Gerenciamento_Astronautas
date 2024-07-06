@@ -5,9 +5,9 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "Voo.hpp" // Inclui a declaração antecipada da classe Voo
+#include "Voo.hpp" 
 
-class Voo; // Declaração antecipada da classe Voo
+class Voo; 
 
 class Astronauta
 {
@@ -32,4 +32,4 @@ public:
     const std::vector<Voo *> &getVoosParticipados() const;
 };
 
-#endif // ASTRONAUTA_HPP
+#endif 
