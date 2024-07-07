@@ -8,15 +8,13 @@ int Voo::getCodigo() const {
     return codigo;
 }
 
-void Voo::adicionarPassageiro(std::shared_ptr<Astronauta> astronauta) {
+void Voo::adicionarPassageiro(Astronauta* astronauta) {
     passageiros.push_back(astronauta);
-    astronauta->adicionarVoo(shared_from_this());
 }
 
 bool Voo::removerPassageiroPorCpf(const std::string& cpf) {
-    auto it = std::find_if(passageiros.begin(), passageiros.end(), [&](std::shared_ptr<Astronauta> a) { return a->getCpf() == cpf; });
+    auto it = std::find_if(passageiros.begin(), passageiros.end(), [&](Astronauta* a) { return a->getCpf() == cpf; });
     if (it != passageiros.end()) {
-        (*it)->removerVoo(shared_from_this());
         passageiros.erase(it);
         return true;
     }
@@ -41,7 +39,7 @@ void Voo::finalizar(bool sucesso) {
     for (auto& astronauta : passageiros) {
         astronauta->setDisponivel(true);
         if (!sucesso) {
-            astronauta->morrer();
+            astronauta->setDisponivel(false); // Marca como morto
         }
     }
 }
@@ -58,17 +56,17 @@ void Voo::imprimirInfo() const {
     }
 }
 
-void Voo::cadastrarVoo(std::vector<std::shared_ptr<Voo>>& voos, int codigo) {
-    voos.push_back(std::make_shared<Voo>(codigo));
+void Voo::cadastrarVoo(std::vector<Voo>& voos, int codigo) {
+    voos.push_back(Voo(codigo));
     std::cout << "Voo cadastrado com sucesso!" << std::endl;
 }
 
-void Voo::adicionarAstronautaAoVoo(std::vector<std::shared_ptr<Voo>>& voos, std::vector<std::shared_ptr<Astronauta>>& astronautas, const std::string& cpf, int codigo) {
+void Voo::adicionarAstronautaAoVoo(std::vector<Voo>& voos, std::vector<Astronauta>& astronautas, const std::string& cpf, int codigo) {
     for (auto& voo : voos) {
-        if (voo->getCodigo() == codigo && !voo->emCurso && !voo->finalizado) {
+        if (voo.getCodigo() == codigo && !voo.emCurso && !voo.finalizado) {
             for (auto& astronauta : astronautas) {
-                if (astronauta->getCpf() == cpf && astronauta->isDisponivel()) {
-                    voo->adicionarPassageiro(astronauta);
+                if (astronauta.getCpf() == cpf && astronauta.isDisponivel()) {
+                    voo.adicionarPassageiro(&astronauta);
                     std::cout << "Astronauta adicionado ao voo." << std::endl;
                     return;
                 }
@@ -80,19 +78,19 @@ void Voo::adicionarAstronautaAoVoo(std::vector<std::shared_ptr<Voo>>& voos, std:
     std::cout << "Voo não encontrado ou não está em planejamento." << std::endl;
 }
 
-bool Voo::removerAstronautaDeVoo(std::vector<std::shared_ptr<Voo>>& voos, int codigo, const std::string& cpf) {
+bool Voo::removerAstronautaDeVoo(std::vector<Voo>& voos, int codigo, const std::string& cpf) {
     for (auto& voo : voos) {
-        if (voo->getCodigo() == codigo) {
-            return voo->removerPassageiroPorCpf(cpf);
+        if (voo.getCodigo() == codigo) {
+            return voo.removerPassageiroPorCpf(cpf);
         }
     }
     return false;
 }
 
-void Voo::listarVoos(const std::vector<std::shared_ptr<Voo>>& voos) {
+void Voo::listarVoos(const std::vector<Voo>& voos) {
     std::cout << "------ Lista de Voos ------" << std::endl;
     for (const auto& voo : voos) {
-        voo->imprimirInfo();
+        voo.imprimirInfo();
         std::cout << std::endl;
     }
 }

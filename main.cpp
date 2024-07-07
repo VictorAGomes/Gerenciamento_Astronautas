@@ -1,12 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <memory>
 #include "Astronauta.hpp"
 #include "Voo.hpp"
 
 int main() {
-    std::vector<std::shared_ptr<Astronauta>> astronautas;
-    std::vector<std::shared_ptr<Voo>> voos;
+    std::vector<Astronauta> astronautas;
+    std::vector<Voo> voos;
 
     int choose;
 
@@ -37,7 +36,7 @@ int main() {
                 std::cin >> nome;
                 std::cout << "Idade: ";
                 std::cin >> idade;
-                astronautas.push_back(std::make_shared<Astronauta>(cpf, nome, idade));
+                astronautas.emplace_back(cpf, nome, idade);
                 std::cout << "Astronauta cadastrado com sucesso!" << std::endl;
                 break;
             }
@@ -77,8 +76,8 @@ int main() {
                 std::cout << "Código do voo: ";
                 std::cin >> codigo;
                 for (auto& voo : voos) {
-                    if (voo->getCodigo() == codigo) {
-                        voo->lancar();
+                    if (voo.getCodigo() == codigo) {
+                        voo.lancar();
                         std::cout << "Voo lançado com sucesso!" << std::endl;
                         break;
                     }
@@ -90,8 +89,8 @@ int main() {
                 std::cout << "Código do voo: ";
                 std::cin >> codigo;
                 for (auto& voo : voos) {
-                    if (voo->getCodigo() == codigo) {
-                        voo->finalizar(true);
+                    if (voo.getCodigo() == codigo) {
+                        voo.finalizar(true); // Supondo sucesso por padrão
                         std::cout << "Voo finalizado com sucesso!" << std::endl;
                         break;
                     }
@@ -103,8 +102,8 @@ int main() {
                 std::cout << "Código do voo: ";
                 std::cin >> codigo;
                 for (auto& voo : voos) {
-                    if (voo->getCodigo() == codigo) {
-                        voo->explodir();
+                    if (voo.getCodigo() == codigo) {
+                        voo.explodir();
                         std::cout << "Voo explodiu!" << std::endl;
                         break;
                     }
@@ -114,8 +113,8 @@ int main() {
             case 8: {
                 std::cout << "------ Astronautas Mortos ------" << std::endl;
                 for (const auto& astronauta : astronautas) {
-                    if (!astronauta->isDisponivel()) {
-                        std::cout << astronauta->getNome() << " (" << astronauta->getCpf() << ")" << std::endl;
+                    if (!astronauta.isDisponivel()) {
+                        std::cout << astronauta.getNome() << " (" << astronauta.getCpf() << ")" << std::endl;
                     }
                 }
                 break;
