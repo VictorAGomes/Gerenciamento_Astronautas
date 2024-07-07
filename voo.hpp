@@ -1,35 +1,35 @@
 #ifndef VOO_HPP
 #define VOO_HPP
 
-#include <iostream>
-#include <vector>
 #include <string>
-#include "Astronauta.hpp" 
+#include <vector>
+#include <memory>
+#include "Astronauta.hpp"
 
-class Astronauta; 
-
-class Voo
-{
+class Voo : public std::enable_shared_from_this<Voo> {
 private:
     int codigo;
+    std::vector<std::shared_ptr<Astronauta>> passageiros;
     bool emCurso;
     bool finalizado;
     bool sucesso;
-    std::vector<Astronauta *> passageiros;
 
 public:
     Voo(int codigo);
 
     int getCodigo() const;
-    bool isEmCurso() const;
-    bool isFinalizado() const;
-    bool foiSucesso() const;
-    void adicionarPassageiro(Astronauta *astronauta);
-    bool removerPassageiro(const std::string &cpf);
+    void adicionarPassageiro(std::shared_ptr<Astronauta> astronauta);
+    bool removerPassageiroPorCpf(const std::string& cpf);
+
     void lancar();
     void finalizar(bool sucesso);
     void explodir();
     void imprimirInfo() const;
+
+    static void cadastrarVoo(std::vector<std::shared_ptr<Voo>>& voos, int codigo);
+    static void adicionarAstronautaAoVoo(std::vector<std::shared_ptr<Voo>>& voos, std::vector<std::shared_ptr<Astronauta>>& astronautas, const std::string& cpf, int codigo);
+    static bool removerAstronautaDeVoo(std::vector<std::shared_ptr<Voo>>& voos, int codigo, const std::string& cpf);
+    static void listarVoos(const std::vector<std::shared_ptr<Voo>>& voos);
 };
 
 #endif // VOO_HPP
