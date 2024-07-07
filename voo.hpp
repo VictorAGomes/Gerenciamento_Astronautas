@@ -1,7 +1,6 @@
 #ifndef VOO_HPP
 #define VOO_HPP
 
-#include <string>
 #include <vector>
 #include "Astronauta.hpp"
 
@@ -12,23 +11,31 @@ private:
     bool emCurso;
     bool finalizado;
     bool sucesso;
+    bool explodido;
 
 public:
     Voo(int codigo);
 
     int getCodigo() const;
-    void adicionarPassageiro(Astronauta* astronauta);
-    bool removerPassageiroPorCpf(const std::string& cpf);
+    const std::vector<Astronauta*>& getPassageiros() const;
+    bool isEmCurso() const;
+    bool isFinalizado() const;
+    bool isSucesso() const;
+    bool isExplodido() const;
 
+    void adicionarPassageiro(Astronauta* astronauta);
+    void removerPassageiro(const std::string& cpf);
     void lancar();
     void finalizar(bool sucesso);
     void explodir();
-    void imprimirInfo() const;
 
-    static void cadastrarVoo(std::vector<Voo>& voos, int codigo);
-    static void adicionarAstronautaAoVoo(std::vector<Voo>& voos, std::vector<Astronauta>& astronautas, const std::string& cpf, int codigo);
-    static bool removerAstronautaDeVoo(std::vector<Voo>& voos, int codigo, const std::string& cpf);
+    static void cadastrarVoo(std::vector<Voo>& voos);
     static void listarVoos(const std::vector<Voo>& voos);
+    static void adicionarAstronautaAoVoo(std::vector<Voo>& voos, std::vector<Astronauta>& astronautas);
+    static void removerAstronautaDoVoo(std::vector<Voo>& voos);
+    static void lancarVoo(std::vector<Voo>& voos);
+    static void finalizarVoo(std::vector<Voo>& voos);
+    static void explodirVoo(std::vector<Voo>& voos);
 };
 
-#endif 
+#endif // VOO_HPP
